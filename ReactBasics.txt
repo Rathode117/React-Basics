@@ -41,7 +41,7 @@ RULES of JSX:
 
 
 Components:
-    -> Like functions but return HTML.
+    -> Like functions but returns HTML.
     -> Work in isolation.
     -> Two types = 1.Class Components and 2. Function Components(new and better).
 Creating React Component:
