@@ -1,0 +1,248 @@
+React:
+    -> JavaScript library
+    -> SPA - Single Page Applications.
+    -> Reusable UI components.
+
+Creating React App:
+    ->npx create-react-app <app name in lowercase>
+
+How it works?
+    ->React creates a virtual DOM in memory where all the changes
+      take place first and then any change occurs in the browser DOM.
+    ->React only changes what needs to be changed. It finds out the changes
+     that have been made and changed only them.
+    ->React renders HTML to the web page by using a function called
+     createRoot() and its method render().
+
+createRoot():
+    ->Takes one argument, an HTML element.
+    ->The HTML element where a react component should be displayed.
+render():
+    ->It is called to define the React component to be rendered.
+    ->It will be rendered in the public/index.html in the element
+     we put in createRoot().
+
+
+
+JSX:
+    ->Stands for JavaScript XML.
+    ->Allows us to write HTML in React/JavaScript.
+    ->Converted to regular JavaScript at runtime.
+RULES of JSX:
+    ->The JS must be wrapped inside curlies. { ---content--- }
+    ->One TOP level element, could be an empty HTML tag.  <> ---content---  </>
+    ->Elements must be closed with />.
+    ->Instead of writing class as in HTML use className.
+    ->if statements cannot be used inside JSX, so write them outside
+      or use ternary operator.
+        eg. const x = 5;
+            const myElement = <h1>{(x) < 10 ? "Hello" : "Goodbye"}</h1>;
+
+
+
+Components:
+    -> Like functions but return HTML.
+    -> Work in isolation.
+    -> Two types = 1.Class Components and 2. Function Components(new and better).
+Creating React Component:
+    -> The first alphabet of name should be an UpperCase letter.
+    -> Components can be nested inside Components.
+    -> Create different components in different .js files with name same as the component
+       in it, and the export and import it whereever needed.
+        eg. function Car() {
+              return <h2>Hi, I am a Car!</h2>;
+            }
+            export default Car;
+
+            To render just write
+              import Car from './Car.js';
+              <Car/>.
+
+
+Props:
+    ->Like function arguments and can be sent to Components as attributes.
+    ->Even components can be passed as props.
+    ->To send props into a component, use the same syntax as HTML attributes.
+    ->Component receives the argument as a props object.
+      eg. function Car(props) {
+              return <h2>I am a {props.color} Car!</h2>;
+            }
+            To render just write <Car color="red"/>.
+    ->Props can also be variable/object which can be passed in curlies.
+       eg. <Car color = {favcolor}/>
+    ->Props are read only, you cannot perform any change in them.
+
+
+
+React Events:
+    ->Same events as HTML.
+    -> Written in camelCase. eg. onclick is written as onClick.
+    ->Curlies {FunctionName} are used instead of "FunctionName".
+    ->To pass an argument to an event handler, use an arrow function.
+      eg. onClick={() => myfun("myargument")}
+    ->Event handlers have access to the React event that triggered the function.
+      eg. onClick={(event) => shoot("Goal!", event)}
+          //Now here the event is an object which has multiple properties.
+
+
+Conditional Rendering:
+    1.->If statements can be used.
+        eg. function Car(props) {
+              const color = props.favcolor;
+              if (favcolor=="red") {
+                return <The Car is Red/>;
+              }
+              return <The Car is Not Red/>;
+              }
+              const favcolor = "red";
+              <Car color = {favcolor}/>
+
+        
+    2.->Using logical && operator. 
+        -if the left expression is true the right is rendered.
+          eg. {color=="red" &&  <h2>is red</h2> } 
+    
+    3.->Using Ternary operator.
+        - condition ? true : false
+
+
+
+React Lists:
+    -> We use JavaScript map() function to render a list.
+      eg. HOW WE DO IT? 
+        - We make a common component for all the list items.
+            function Car(props) {
+              return <li>I am a { props.brand }</li>;
+            }
+        - The list
+            const cars = ['Ford', 'BMW', 'Audi'];
+        - The we call the above component for all the items using map(callback)
+            {cars.map((car) => <Car brand={car} />)}
+    ->When you run this code in your create-react-app, it will work but you
+      will receive a warning that there is no "key" provided for the list items.
+KEYS:
+    ->Keys allow React to keep track of elements.
+    ->If an item is updated or removed, only that item will be
+      re-rendered instead of the entire list.
+    ->The key should be a unique ID assigned to each item.
+    ->Now the key will also be passed to the component.
+      eg.
+        - The common component for each list item.
+            function Car(props) {
+              return <li>I am a { props.brand }</li>;
+            }
+        - The list
+            const cars = [
+              {id: 1, brand: 'Ford'},
+              {id: 2, brand: 'BMW'},
+              {id: 3, brand: 'Audi'}
+            ];
+        -The call for each item in the list.
+            {cars.map((car) => <Car key={car.id} brand={car.brand} />)}
+          
+
+
+React Forms:
+    ->Form data is handles by components and not the DOM as in HTML.
+    ->Data is stored in the component state.
+    ->React forms neeed to have to functions
+    ->React forms use useState.
+        1. onSubmit = {handleSubmit}
+           ->The handleSubmit function should have event.preventDefault(); to avoid reloading.
+        2. onChange = {handleChange}
+           ->This is used to render any change that occurs in the input fields.
+           ->It uses setState of the useState.
+    eg.
+        
+        function MyForm() {
+          const [inputs, setInputs] = useState({});  //useState for an object having parenthesis.
+
+          const handleChange = (event) => {       //event object
+            const name = event.target.name;       //The name of the field.
+            const value = event.target.value;     //Value of the field.
+            setInputs(values => ({...values, [name]:value}))   // spread operation with [key]: value
+          }
+
+          const handleSubmit = (event) => {
+            event.preventDefault();  //preventing the reloading when submitted.
+            alert(inputs);
+          }
+
+          return (
+            <form onSubmit={handleSubmit}>
+            <label>Enter your name:
+            <input 
+              type="text" 
+              name="username" 
+              value={inputs.username || ""}  //if the name is empty then value is ""
+              onChange={handleChange}
+            />
+            </label>
+            <label>Enter your age:
+            <input 
+              type="number" 
+              name="age" 
+              value={inputs.age || ""} 
+              onChange={handleChange}
+            />
+            </label>
+            <input type="submit" />
+            </form>
+        )
+      }
+
+React Hooks:
+    ->Hooks allow function components to have access to state and other React features.
+    ->RULES of Hooks:
+      -Hooks can only be called inside React function components and not in class components.
+      -Hooks can only be called at the top level of a component.
+      -Hooks cannot be conditional.
+
+1. useState:
+    ->The React useState Hook allows us to track state in a function component.
+    ->To use the useState Hook, we first need to import it into our component.
+        eg.
+        import { useState } from "react"; //named export hence destructuring 
+            function FavoriteColor() {
+              const [current_state, function_to_change_state] = useState("initial_value"); 
+            }
+    ->The useState Hook can be used to keep track of strings, numbers, booleans,
+      arrays, objects, and any combination of these!
+    ->Updating Objects and Arrays in State.
+      -Now whenever we use setState function the state is overwritten,
+       meaning that if we only want to change only one key's value in an object
+       then we can't do that as,
+              setState({Car: "Ford"}) will overwritte everything else.
+      -To solve this problem we use ES6 spread operator.
+        eg. 
+            setState(previousState=>{return{...previousState, car:"Ford"}});
+ Explanation -Because we need the current value of state,
+            we pass a function into our setState function. 
+            This function receives the previous value.
+            We then return an object, spreading the previousState
+            and overwriting only the Car.
+
+2. useEffect:
+    ->The useEffect Hook allows you to perform side effects in your components.
+        eg. fetching data, directly updating the DOM, and timers.
+    ->useEffect accepts two arguments. The second argument is optional.
+        syntax - useEffect(<function>, <dependency>)
+    
+    1. No dependency passed:
+      useEffect(() => {
+        //Runs on every render
+      });
+
+
+    2. An empty array:
+      useEffect(() => {
+        //Runs only on the first render
+      }, []);
+    Note: In developmet build it will run 2 times but in production only 1 time.
+
+
+    3. Props or state values:
+      useEffect(() => {
+        //Runs on the first render
+        //And any time any dependency value changes
+      }, [prop, state]);
